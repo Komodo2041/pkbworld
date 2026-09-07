@@ -7,6 +7,25 @@
 
 
 <div class="container">
+    <form action="" method="get">
+        <lable>Kraj</label>
+            <select class="form-control" name="country">
+                <option value="">-</option>
+                @foreach ($country AS $c)
+                <option value="{{$c}}" @if ($c==$code) selected @endif>{{$c}}</option>
+                @endforeach
+            </select>
+            <lable>Rok</label>
+                <select class="form-control" name="year">
+                    <option value="">-</option>
+                    @foreach ($years AS $y)
+                    <option value="{{$y}}" @if ($y==$year) selected @endif>{{$y}}</option>
+                    @endforeach
+                </select>
+                <br />
+                <a class="btn btn-danger" href="/">Reset</a>
+                <input type="submit" value="Szukaj" class="btn bt-info" />
+    </form>
     <table class="table">
         <tr>
             <th></th>

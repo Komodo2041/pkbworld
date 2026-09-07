@@ -9,11 +9,33 @@ use App\Models\Pkb;
 class MainController extends Controller
 {
 
-    public function main()
+    public function main(Request $req)
     {
-        $maxy = Pkb::max("year");
-        $data = Pkb::where("year", $maxy)->where("code", "!=", "")->orderBy("value", "DESC")->get()->toArray();
-        return view("main", ["data" => $data]);
+
+        $year = (int) $req->input("year", 0);
+        $code = $req->input("country", "");
+        $data = [];
+
+        if ($year != 0 || $code != "") {
+            if ($year != 0 && $code != "") {
+                $data = Pkb::where("year", $year)->where("country", $code)->orderBy("value", "DESC")->get()->toArray();
+            } elseif ($year != 0) {
+
+                $data = Pkb::where("year", $year)->orderBy("value", "DESC")->get()->toArray();
+            } elseif ($code != "") {
+                $data = Pkb::where("country", $code)->orderBy("year", "DESC")->get()->toArray();
+            }
+        } else {
+            $maxy = Pkb::max("year");
+            $data = Pkb::where("year", $maxy)->where("code", "!=", "")->orderBy("value", "DESC")->get()->toArray();
+        }
+
+
+
+        $years = Pkb::select("year")->groupBy("year")->get()->pluck("year")->toArray();
+        $country = Pkb::select("country")->groupBy("country")->get()->pluck("country")->toArray();
+
+        return view("main", ["data" => $data, "years" => $years, "country" => $country, "year" => $year, "code" => $code]);
     }
 
     public function import()
