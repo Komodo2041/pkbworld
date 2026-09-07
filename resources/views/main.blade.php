@@ -9,8 +9,11 @@
 <div class="container">
     TUTAJ BĘDZIE TABELA
 
+
 </div>
 
-
+<div class="container">
+    <a href="/import" class="btn btn-info">Import Csv</a>
+</div>
 
 @endsection('content')
