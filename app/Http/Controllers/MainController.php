@@ -15,6 +15,7 @@ class MainController extends Controller
         $year = (int) $req->input("year", 0);
         $code = $req->input("country", "");
         $data = [];
+        $type = 0;
 
         if ($year != 0 || $code != "") {
             if ($year != 0 && $code != "") {
@@ -24,18 +25,17 @@ class MainController extends Controller
                 $data = Pkb::where("year", $year)->orderBy("value", "DESC")->get()->toArray();
             } elseif ($code != "") {
                 $data = Pkb::where("country", $code)->orderBy("year", "DESC")->get()->toArray();
+                $type = 1;
             }
         } else {
             $maxy = Pkb::max("year");
             $data = Pkb::where("year", $maxy)->where("code", "!=", "")->orderBy("value", "DESC")->get()->toArray();
         }
 
-
-
         $years = Pkb::select("year")->groupBy("year")->get()->pluck("year")->toArray();
         $country = Pkb::select("country")->groupBy("country")->get()->pluck("country")->toArray();
 
-        return view("main", ["data" => $data, "years" => $years, "country" => $country, "year" => $year, "code" => $code]);
+        return view("main", ["data" => $data, "years" => $years, "country" => $country, "year" => $year, "code" => $code, "type" => $type]);
     }
 
     public function import()
@@ -54,5 +54,25 @@ class MainController extends Controller
             );
         }
         return redirect("/")->with('success', 'Dokonano importu z CSV');
+    }
+
+    public function calc()
+    {
+        $country = Pkb::select("country")->groupBy("country")->get()->pluck("country")->toArray();
+
+        foreach ($country as $co) {
+            $data = Pkb::where("country", $co)->orderBy("value", "ASC")->get();
+            $last = null;
+            foreach ($data as $record) {
+                if ($last) {
+                    $res = $record->value / $last;
+                    $record->inc = $res;
+                    $record->save();
+                }
+                $last = $record['value'];
+            }
+        }
+
+        return redirect("/")->with('success', 'Dokonano obliczeń');
     }
 }

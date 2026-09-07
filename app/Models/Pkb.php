@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class Pkb extends Model
 {
     public $table = "pkb";
-    public $fillable = ["country", "code", "value", "year", "info"];
+    public $fillable = ["country", "code", "value", "year", "info", "inc"];
 }

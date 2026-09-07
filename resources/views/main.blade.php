@@ -33,6 +33,7 @@
             <th>Kod</th>
             <th>Value</th>
             <th>Year</th>
+            @if ($type == 1) <th>Inc</th> @endif
         </tr>
         @foreach ($data AS $record)
         <tr>
@@ -41,6 +42,7 @@
             <th>{{$record['code']}}</th>
             <th>{{ Illuminate\Support\Number::format($record['value'], locale: 'pl') }}</th>
             <th>{{$record['year']}}</th>
+            @if ($type == 1) <th>{{($record['inc'] - 1) * 100 }}</th> @endif
         </tr>
         @endforeach
     </table>
@@ -50,6 +52,7 @@
 
 <div class="container">
     <a href="/import" class="btn btn-info">Import Csv</a>
+    <a href="/calc" class="btn btn-info">Calc Increase</a>
 </div>
-
+<br />
 @endsection('content')
