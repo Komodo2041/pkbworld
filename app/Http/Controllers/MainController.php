@@ -11,7 +11,9 @@ class MainController extends Controller
 
     public function main()
     {
-        return view("main", []);
+        $maxy = Pkb::max("year");
+        $data = Pkb::where("year", $maxy)->where("code", "!=", "")->orderBy("value", "DESC")->get()->toArray();
+        return view("main", ["data" => $data]);
     }
 
     public function import()
