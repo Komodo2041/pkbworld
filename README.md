@@ -4,4 +4,4 @@ Tutaj będzie projekt w Laravelu dotyczący datych związanych z PKB w celu bada
 Dane będą pobrane z pliku csv  
 curl -L "https://ourworldindata.org/grapher/gdp-maddison-project-database.csv?v=1&csvType=full&useColumnShortNames=false" -o gdp_swiata_maddison.csv  
 
- <img src="example.png" width="600" alt="Example view">
+ <img src="example.PNG" width="600" alt="Example view">
